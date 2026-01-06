@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Income</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="logo">💰 Finance Tracker</a>
+  <nav>
+    <a href="income.html" class="active">Income</a>
+    <a href="expenses.html">Expenses</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h2>Add Income</h2>
+
+  <form id="incomeForm" class="form">
+    <input type="text" placeholder="Title" required />
+    <select required>
+      <option value="">Source</option>
+      <option>Salary</option>
+      <option>Freelance</option>
+      <option>Business</option>
+      <option>Other</option>
+    </select>
+    <input type="number" placeholder="Amount" required />
+    <input type="date" required />
+    <button>Add Income</button>
+  </form>
+
+  <h2>Income List</h2>
+  <ul id="incomeList" class="list"></ul>
+</main>
+
+<script src="js/db.js"></script>
+<script src="js/income.js"></script>
+</body>
+</html>
 
