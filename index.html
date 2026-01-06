@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Finance Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="pwa/manifest.json">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="logo">💰 Finance Tracker</a>
+  <nav>
+    <a href="income.html">Income</a>
+    <a href="expenses.html">Expenses</a>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="summary">
+    <div class="card income">
+      <h3>Total Income</h3>
+      <p id="totalIncome">$0</p>
+    </div>
+    <div class="card expense">
+      <h3>Total Expenses</h3>
+      <p id="totalExpenses">$0</p>
+    </div>
+    <div class="card balance">
+      <h3>Balance</h3>
+      <p id="balance">$0</p>
+    </div>
+  </section>
+</main>
+
+<script src="js/db.js"></script>
+<script src="js/common.js"></script>
+</body>
+</html>
 
