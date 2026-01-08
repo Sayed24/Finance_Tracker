@@ -1,6 +1,5 @@
 let db;
-
-const request = indexedDB.open("FinanceDB", 1);
+const request = indexedDB.open("FinanceTrackerDB", 1);
 
 request.onupgradeneeded = e => {
   db = e.target.result;
@@ -10,16 +9,15 @@ request.onupgradeneeded = e => {
 
 request.onsuccess = e => db = e.target.result;
 
-function add(store, data) {
+function addItem(store, data) {
   db.transaction(store, "readwrite").objectStore(store).add(data);
 }
 
-function getAll(store, cb) {
+function getAllItems(store, cb) {
   const req = db.transaction(store).objectStore(store).getAll();
   req.onsuccess = () => cb(req.result);
 }
 
-function remove(store, id) {
+function deleteItem(store, id) {
   db.transaction(store, "readwrite").objectStore(store).delete(id);
 }
-
