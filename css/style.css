@@ -89,3 +89,38 @@ button {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.charts {
+  margin-top: 2rem;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Dark Mode */
+body.dark {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+body.dark .card,
+body.dark .list li {
+  background: #020617;
+  border: 1px solid #1e293b;
+}
+
+body.dark input,
+body.dark select {
+  background: #020617;
+  color: white;
+  border-color: #
