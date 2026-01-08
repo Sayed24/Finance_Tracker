@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Monthly Report</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
 
+<header class="header">
+  <a href="index.html" class="logo">💰 Finance Tracker</a>
+</header>
+
+<main class="container">
+  <h2>Monthly Report</h2>
+  <select id="month"></select>
+  <div id="report"></div>
+</main>
+
+<script src="js/db.js"></script>
+<script>
+const monthSelect = document.getElementById("month");
+const report = document.getElementById("report");
+
+for (let i = 0; i < 12; i++) {
+  monthSelect.innerHTML += `<option value="${i}">${new Date(0, i).toLocaleString("default", {month:"long"})}</option>`;
+}
+
+monthSelect.onchange = () => {
+  Promise.all([
+    getAllItems("income"),
+    getAllItems("expenses")
+  ]).then(([income, expenses]) => {
+    const m = +monthSelect.value;
+    const iTotal = income.filter(i=>new Date(i.date).getMonth()===m)
+      .reduce((s,i)=>s+i.amount,0);
+    const eTotal = expenses.filter(e=>new Date(e.date).getMonth()===m)
+      .reduce((s,e)=>s+e.amount,0);
+
+    report.innerHTML = `
+      <p>Income: $${iTotal}</p>
+      <p>Expenses: $${eTotal}</p>
+      <p>Balance: $${iTotal - eTotal}</p>
+    `;
+  });
+};
+</script>
+</body>
+</html>
