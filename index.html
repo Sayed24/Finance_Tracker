@@ -36,6 +36,10 @@
 
 <script src="js/db.js"></script>
 <script src="js/common.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("pwa/service-worker.js");
+}
+</script>
 </body>
 </html>
-
