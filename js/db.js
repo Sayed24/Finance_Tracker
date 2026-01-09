@@ -1,50 +1,97 @@
-let db;
+/* =====================================================
+   IndexedDB Core – Finance Tracker
+   This file is the SINGLE source of DB truth
+===================================================== */
+
 const DB_NAME = "FinanceTrackerDB";
+const DB_VERSION = 1;
 
-const dbReady = new Promise((resolve, reject) => {
-  const request = indexedDB.open(DB_NAME, 1);
+let dbInstance = null;
 
-  request.onupgradeneeded = e => {
-    db = e.target.result;
-    if (!db.objectStoreNames.contains("income")) {
-      db.createObjectStore("income", { keyPath: "id" });
-    }
-    if (!db.objectStoreNames.contains("expenses")) {
-      db.createObjectStore("expenses", { keyPath: "id" });
-    }
-  };
+/* -----------------------------
+   OPEN DATABASE
+----------------------------- */
+function openDatabase() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-  request.onsuccess = e => {
-    db = e.target.result;
-    resolve();
-  };
+    request.onupgradeneeded = event => {
+      const db = event.target.result;
 
-  request.onerror = () => reject("DB failed");
-});
+      if (!db.objectStoreNames.contains("income")) {
+        db.createObjectStore("income", { keyPath: "id" });
+      }
 
-function addItem(store, data) {
-  return dbReady.then(() =>
-    db.transaction(store, "readwrite").objectStore(store).add(data)
-  );
+      if (!db.objectStoreNames.contains("expenses")) {
+        db.createObjectStore("expenses", { keyPath: "id" });
+      }
+    };
+
+    request.onsuccess = event => {
+      dbInstance = event.target.result;
+      resolve(dbInstance);
+    };
+
+    request.onerror = () => {
+      reject("❌ Failed to open IndexedDB");
+    };
+  });
 }
 
-function getAllItems(store) {
-  return dbReady.then(() =>
-    new Promise(resolve => {
-      const req = db.transaction(store).objectStore(store).getAll();
-      req.onsuccess = () => resolve(req.result);
-    })
-  );
+/* -----------------------------
+   ENSURE DB READY
+----------------------------- */
+async function getDB() {
+  if (dbInstance) return dbInstance;
+  return await openDatabase();
 }
 
-function updateItem(store, data) {
-  return dbReady.then(() =>
-    db.transaction(store, "readwrite").objectStore(store).put(data)
-  );
+/* -----------------------------
+   CRUD HELPERS
+----------------------------- */
+
+async function addOrUpdate(storeName, data) {
+  const db = await getDB();
+  return new Promise(resolve => {
+    const tx = db.transaction(storeName, "readwrite");
+    tx.objectStore(storeName).put(data);
+    tx.oncomplete = resolve;
+  });
 }
 
-function deleteItem(store, id) {
-  return dbReady.then(() =>
-    db.transaction(store, "readwrite").objectStore(store).delete(id)
-  );
+async function deleteItem(storeName, id) {
+  const db = await getDB();
+  return new Promise(resolve => {
+    const tx = db.transaction(storeName, "readwrite");
+    tx.objectStore(storeName).delete(id);
+    tx.oncomplete = resolve;
+  });
 }
+
+async function getAllItems(storeName) {
+  const db = await getDB();
+  return new Promise(resolve => {
+    const tx = db.transaction(storeName, "readonly");
+    const req = tx.objectStore(storeName).getAll();
+    req.onsuccess = () => resolve(req.result || []);
+  });
+}
+
+async function getItemById(storeName, id) {
+  const db = await getDB();
+  return new Promise(resolve => {
+    const tx = db.transaction(storeName, "readonly");
+    const req = tx.objectStore(storeName).get(id);
+    req.onsuccess = () => resolve(req.result || null);
+  });
+}
+
+/* -----------------------------
+   EXPOSE GLOBAL (IMPORTANT)
+----------------------------- */
+window.DB = {
+  addOrUpdate,
+  deleteItem,
+  getAllItems,
+  getItemById
+};
