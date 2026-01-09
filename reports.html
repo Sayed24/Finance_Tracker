@@ -1,50 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Monthly Report</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports – Finance Tracker</title>
+
   <link rel="stylesheet" href="css/style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
 </head>
 <body>
 
-<header class="header">
+<header>
   <a href="index.html" class="logo">💰 Finance Tracker</a>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="reports.html" class="active">Reports</a>
+  </nav>
 </header>
 
-<main class="container">
-  <h2>Monthly Report</h2>
-  <select id="month"></select>
-  <div id="report"></div>
+<main>
+
+  <section class="card">
+    <h2 style="margin-bottom:.5rem;">Monthly Report</h2>
+    <select id="monthSelect"></select>
+  </section>
+
+  <section class="dashboard" style="margin-top:1rem;">
+    <div class="card income">
+      <h3>Income</h3>
+      <p id="reportIncome">$0</p>
+    </div>
+
+    <div class="card expense">
+      <h3>Expenses</h3>
+      <p id="reportExpense">$0</p>
+    </div>
+
+    <div class="card balance">
+      <h3>Balance</h3>
+      <p id="reportBalance">$0</p>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:1.5rem;">
+    <canvas id="reportChart" height="120"></canvas>
+  </section>
+
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/db.js"></script>
-<script>
-const monthSelect = document.getElementById("month");
-const report = document.getElementById("report");
+<script src="js/state.js"></script>
+<script src="js/reports.js"></script>
 
-for (let i = 0; i < 12; i++) {
-  monthSelect.innerHTML += `<option value="${i}">${new Date(0, i).toLocaleString("default", {month:"long"})}</option>`;
-}
-
-monthSelect.onchange = () => {
-  Promise.all([
-    getAllItems("income"),
-    getAllItems("expenses")
-  ]).then(([income, expenses]) => {
-    const m = +monthSelect.value;
-    const iTotal = income.filter(i=>new Date(i.date).getMonth()===m)
-      .reduce((s,i)=>s+i.amount,0);
-    const eTotal = expenses.filter(e=>new Date(e.date).getMonth()===m)
-      .reduce((s,e)=>s+e.amount,0);
-
-    report.innerHTML = `
-      <p>Income: $${iTotal}</p>
-      <p>Expenses: $${eTotal}</p>
-      <p>Balance: $${iTotal - eTotal}</p>
-    `;
-  });
-};
-</script>
 </body>
 </html>
