@@ -3,67 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <title>Finance Tracker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="pwa/manifest.json">
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="header">
-  <a href="index.html" class="logo">💰 Finance Tracker</a>
+  <h1>Finance Tracker</h1>
   <nav>
     <a href="income.html">Income</a>
     <a href="expenses.html">Expenses</a>
+    <a href="reports.html">Reports</a>
   </nav>
 </header>
 
-  <section class="controls">
-  <select id="periodFilter">
-    <option value="all">All</option>
-    <option value="daily">Today</option>
-    <option value="monthly">This Month</option>
-    <option value="yearly">This Year</option>
-  </select>
+<main class="grid">
+  <div class="card">
+    <h3>Total Income</h3>
+    <p id="totalIncome">$0</p>
+  </div>
 
-  <select id="sortFilter">
-    <option value="">Sort</option>
-    <option value="amount-asc">Amount ↑</option>
-    <option value="amount-desc">Amount ↓</option>
-    <option value="date-new">Newest</option>
-    <option value="date-old">Oldest</option>
-  </select>
-</section>
+  <div class="card">
+    <h3>Total Expenses</h3>
+    <p id="totalExpenses">$0</p>
+  </div>
 
-  <section class="charts">
-  <canvas id="expenseChart"></canvas>
-  <canvas id="summaryChart"></canvas>
-</section>
-
-<main class="container">
-  <section class="summary">
-    <div class="card income">
-      <h3>Total Income</h3>
-      <p id="totalIncome">$0</p>
-    </div>
-    <div class="card expense">
-      <h3>Total Expenses</h3>
-      <p id="totalExpenses">$0</p>
-    </div>
-    <div class="card balance">
-      <h3>Balance</h3>
-      <p id="balance">$0</p>
-    </div>
-  </section>
+  <div class="card">
+    <h3>Balance</h3>
+    <p id="balance">$0</p>
+  </div>
 </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/db.js"></script>
-<script src="js/common.js"></script>
-  <script src="js/charts.js"></script>
+<script src="js/dashboard.js"></script>
+
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("pwa/service-worker.js");
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./pwa/service-worker.js");
+  });
 }
 </script>
+
 </body>
 </html>
