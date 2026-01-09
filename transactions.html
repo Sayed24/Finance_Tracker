@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transactions – Finance Tracker</title>
 
+  <link rel="stylesheet" href="css/style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">💰 Finance Tracker</a>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="transactions.html" class="active">Transactions</a>
+    <a href="reports.html">Reports</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ADD TRANSACTION -->
+  <section class="form">
+    <h2>Add Transaction</h2>
+
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <input id="title" placeholder="Title" />
+    <input id="amount" type="number" placeholder="Amount" />
+    <input id="category" placeholder="Category (Food, Rent...)" />
+
+    <button id="addBtn">Add Transaction</button>
+  </section>
+
+  <!-- SEARCH -->
+  <div class="toolbar">
+    <input id="search" placeholder="Search transactions..." />
+    <button onclick="exportCSV()">Export CSV</button>
+  </div>
+
+  <!-- LIST -->
+  <ul id="list" class="list"></ul>
+
+</main>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h3>Edit Transaction</h3>
+
+    <input id="editTitle" />
+    <input id="editAmount" type="number" />
+    <input id="editCategory" />
+
+    <button id="saveEdit">Save</button>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/state.js"></script>
+<script src="js/transactions.js"></script>
+
+</body>
+</html>
